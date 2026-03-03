@@ -9,6 +9,8 @@ const navLinks = [
   { to: '/brain-teasers', label: 'Brain Teasers' },
   { to: '/journal', label: 'Soul Scribbles' },
   { to: '/insights', label: 'Insights' },
+  { to: '/luna-tracker', label: 'Luna' },
+  { to: '/sleep-cycle', label: 'Sleep' },
 ];
 
 const Navbar = () => {

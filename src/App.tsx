@@ -10,6 +10,8 @@ import MindfulnessPage from "./pages/MindfulnessPage";
 import BrainTeasersPage from "./pages/BrainTeasersPage";
 import JournalPage from "./pages/JournalPage";
 import InsightsPage from "./pages/InsightsPage";
+import LunaTrackerPage from "./pages/LunaTrackerPage";
+import SleepCyclePage from "./pages/SleepCyclePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/brain-teasers" element={<BrainTeasersPage />} />
           <Route path="/journal" element={<JournalPage />} />
           <Route path="/insights" element={<InsightsPage />} />
+          <Route path="/luna-tracker" element={<LunaTrackerPage />} />
+          <Route path="/sleep-cycle" element={<SleepCyclePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
