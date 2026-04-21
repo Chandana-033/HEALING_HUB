@@ -76,6 +76,7 @@ const STORAGE_KEYS = {
   CUSTOM_FACTS: 'healingHub_customFacts',
   LUNA_DATA: 'healingHub_lunaMoodData',
   SLEEP_DATA: 'healingHub_sleepData',
+  EXERCISE_LOG: 'healingHub_exerciseLog',
 };
 
 export interface JournalEntry {
@@ -90,6 +91,32 @@ export interface MoodEntry {
   date: string;
   mood: string;
   score: number; // 1-5
+}
+
+export interface ExerciseLogEntry {
+  date: string; // YYYY-MM-DD
+  type: 'breathing' | 'yoga';
+  name: string;
+  durationSec?: number;
+  timestamp: number;
+}
+
+export function getExerciseLog(): ExerciseLogEntry[] {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.EXERCISE_LOG);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function logExercise(entry: Omit<ExerciseLogEntry, 'date' | 'timestamp'>) {
+  const all = getExerciseLog();
+  const now = new Date();
+  const date = now.toISOString().slice(0, 10);
+  all.push({ ...entry, date, timestamp: now.getTime() });
+  localStorage.setItem(STORAGE_KEYS.EXERCISE_LOG, JSON.stringify(all));
+  return all;
 }
 
 export function getJournalEntries(): JournalEntry[] {
