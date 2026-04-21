@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
   { to: '/', label: 'Home' },
+  { to: '/dashboard', label: 'Dashboard' },
   { to: '/facts', label: 'Facts' },
   { to: '/tune-in', label: 'Tune In' },
   { to: '/mindfulness', label: 'Mindfulness' },
@@ -11,12 +13,14 @@ const navLinks = [
   { to: '/insights', label: 'Insights' },
   { to: '/luna-tracker', label: 'Luna' },
   { to: '/sleep-cycle', label: 'Sleep' },
+  { to: '/therapist', label: 'Therapist' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -97,6 +101,23 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
+        <li>
+          {user ? (
+            <button
+              onClick={() => signOut()}
+              className="text-sm font-semibold px-4 py-1.5 rounded-full bg-primary text-primary-foreground border-none cursor-pointer transition-all hover:-translate-y-0.5"
+            >
+              Sign out
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="text-sm font-semibold px-4 py-1.5 rounded-full bg-primary text-primary-foreground no-underline transition-all hover:-translate-y-0.5 inline-block"
+            >
+              Sign in
+            </Link>
+          )}
+        </li>
       </ul>
     </nav>
   );

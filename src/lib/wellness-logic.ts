@@ -74,6 +74,8 @@ const STORAGE_KEYS = {
   JOURNAL_ENTRIES: 'healingHub_journalEntries',
   MOOD_DATA: 'healingHub_moodData',
   CUSTOM_FACTS: 'healingHub_customFacts',
+  LUNA_DATA: 'healingHub_lunaMoodData',
+  SLEEP_DATA: 'healingHub_sleepData',
 };
 
 export interface JournalEntry {
