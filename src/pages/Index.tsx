@@ -11,6 +11,7 @@ const features = [
   { to: '/insights', icon: '📊', title: 'Insights', desc: 'Track your mood trends and wellness journey' },
   { to: '/luna-tracker', icon: '🌙', title: 'Luna Tracker', desc: 'Log your moods in rhythm with the lunar phases' },
   { to: '/sleep-cycle', icon: '😴', title: 'Sleep Cycle', desc: 'Monitor bedtime, wake-up and sleep quality trends' },
+  { to: '/therapist', icon: '🤝', title: 'Talk to Someone', desc: 'Real helplines and trusted directories to find a therapist' },
 ];
 
 const Index = () => {
