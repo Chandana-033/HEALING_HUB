@@ -5,13 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/dashboard', label: 'Dashboard' },
-  { to: '/tune-in', label: 'Tune In' },
-  { to: '/mindfulness', label: 'Mindfulness' },
-  { to: '/brain-teasers', label: 'Brain Teasers' },
-  { to: '/journal', label: 'Soul Scribbles' },
   { to: '/insights', label: 'Insights' },
-  { to: '/luna-tracker', label: 'Luna' },
-  { to: '/sleep-cycle', label: 'Sleep' },
   { to: '/therapist', label: 'Therapist' },
 ];
 
