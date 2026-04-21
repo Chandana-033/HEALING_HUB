@@ -9,6 +9,8 @@ const features = [
   { to: '/brain-teasers', icon: '🧩', title: 'Brain Teasers', desc: 'Engage your mind with creative puzzles and challenges' },
   { to: '/journal', icon: '✍️', title: 'Soul Scribbles', desc: 'Journal your thoughts and emotions in a safe space' },
   { to: '/insights', icon: '📊', title: 'Insights', desc: 'Track your mood trends and wellness journey' },
+  { to: '/luna-tracker', icon: '🌙', title: 'Luna Tracker', desc: 'Log your moods in rhythm with the lunar phases' },
+  { to: '/sleep-cycle', icon: '😴', title: 'Sleep Cycle', desc: 'Track bedtime, wake-up, and visualize sleep quality' },
 ];
 
 const Index = () => {
