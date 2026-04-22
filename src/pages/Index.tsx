@@ -3,7 +3,7 @@ import PageLayout from '@/components/PageLayout';
 import { motion } from 'framer-motion';
 
 const features = [
-  { to: '/facts', icon: '💭', title: 'Amusing Facts', desc: 'Discover fascinating insights about the mind and wellbeing' },
+  { to: '/gratitude', icon: '🌷', title: 'Gratitude Garden', desc: 'Plant a flower for each thing you\'re grateful for and watch it bloom' },
   { to: '/tune-in', icon: '🎵', title: 'Tune In', desc: 'Immerse yourself in carefully selected calming music' },
   { to: '/mindfulness', icon: '🧘', title: 'Mindfulness', desc: 'Guided meditation and breathing exercises for inner peace' },
   { to: '/brain-teasers', icon: '🧩', title: 'Brain Teasers', desc: 'Engage your mind with creative puzzles and challenges' },
