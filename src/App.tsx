@@ -15,6 +15,7 @@ import SleepCyclePage from "./pages/SleepCyclePage";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
 import TherapistPage from "./pages/TherapistPage";
+import OnboardingPage from "./pages/OnboardingPage";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./hooks/useAuth";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/therapist" element={<TherapistPage />} />
             <Route path="/gratitude" element={<GratitudeGardenPage />} />
