@@ -2,136 +2,162 @@ import { useState } from 'react';
 import PageLayout from '@/components/PageLayout';
 import { motion } from 'framer-motion';
 
-const emotionCategories = [
+// Spotify embed playlists curated per mood (public Spotify-editorial playlists).
+// Embeds work without any API key.
+interface MoodOption {
+  name: string;
+  icon: string;
+  color: string;
+  tagline: string;
+  playlists: { title: string; spotifyId: string; type: 'playlist' | 'album' }[];
+}
+
+const moods: MoodOption[] = [
   {
     name: 'Anxious',
     icon: '😰',
-    gradient: 'from-blue-400 to-blue-600',
     color: '#4169E1',
-    tracks: ['Calm Waves', 'Gentle Rain', 'Forest Ambience'],
+    tagline: 'Slow your breath. Let the sound hold you.',
+    playlists: [
+      { title: 'Peaceful Meditation', spotifyId: '37i9dQZF1DWZqd5JICZI0u', type: 'playlist' },
+      { title: 'Calming Acoustic', spotifyId: '37i9dQZF1DX4E3UdUs7fUx', type: 'playlist' },
+    ],
   },
   {
     name: 'Lonely',
     icon: '🥺',
-    gradient: 'from-purple-400 to-purple-600',
     color: '#9370DB',
-    tracks: ['Warm Embrace', 'Soft Piano', 'Evening Stars'],
+    tagline: 'You are not alone — this music sits with you.',
+    playlists: [
+      { title: 'Sad Songs', spotifyId: '37i9dQZF1DX7qK8ma5wgG1', type: 'playlist' },
+      { title: 'Late Night Vibes', spotifyId: '37i9dQZF1DX4PP3DA4J0N8', type: 'playlist' },
+    ],
   },
   {
     name: 'Motivated',
     icon: '💪',
-    gradient: 'from-orange-400 to-red-500',
     color: '#FF4500',
-    tracks: ['Rise Up', 'Power Walk', 'Morning Energy'],
+    tagline: 'Channel that fire — go build something.',
+    playlists: [
+      { title: 'Beast Mode', spotifyId: '37i9dQZF1DX76Wlfdnj7AP', type: 'playlist' },
+      { title: 'Power Workout', spotifyId: '37i9dQZF1DXdxcBWuJkbcy', type: 'playlist' },
+    ],
   },
   {
     name: 'Happy',
     icon: '😊',
-    gradient: 'from-yellow-400 to-amber-500',
     color: '#FFD700',
-    tracks: ['Sunshine Melody', 'Dancing Light', 'Joyful Hearts'],
+    tagline: 'Ride the wave. Dance a little.',
+    playlists: [
+      { title: 'Happy Hits!', spotifyId: '37i9dQZF1DXdPec7aLTmlC', type: 'playlist' },
+      { title: 'Feel Good Friday', spotifyId: '37i9dQZF1DX7KNKjOK0o75', type: 'playlist' },
+    ],
   },
   {
     name: 'Sad',
     icon: '😢',
-    gradient: 'from-blue-500 to-indigo-600',
     color: '#6495ED',
-    tracks: ['Healing Tones', 'Gentle Comfort', 'Quiet Strength'],
+    tagline: 'Let the tears come. Music makes space for them.',
+    playlists: [
+      { title: 'Life Sucks', spotifyId: '37i9dQZF1DX3YSRoSdA634', type: 'playlist' },
+      { title: 'Down in the Dumps', spotifyId: '37i9dQZF1DWVrtsSlLKzro', type: 'playlist' },
+    ],
   },
   {
     name: 'Focused',
     icon: '🎯',
-    gradient: 'from-violet-500 to-purple-700',
     color: '#8A2BE2',
-    tracks: ['Deep Focus', 'Alpha Waves', 'Study Flow'],
+    tagline: 'Tune out distractions, tune into deep work.',
+    playlists: [
+      { title: 'Deep Focus', spotifyId: '37i9dQZF1DWZeKCadgRdKQ', type: 'playlist' },
+      { title: 'Lo-Fi Beats', spotifyId: '37i9dQZF1DWWQRwui0ExPn', type: 'playlist' },
+    ],
   },
 ];
 
 const TuneInPage = () => {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [playing, setPlaying] = useState<string | null>(null);
-
-  const selectedCategory = emotionCategories.find(c => c.name === selected);
+  const [selected, setSelected] = useState<string>('Happy');
+  const selectedMood = moods.find(m => m.name === selected) ?? moods[0];
 
   return (
     <PageLayout>
-      <section className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-        <div className="glass-card max-w-xl w-full p-10 text-center">
-          <h1 className="font-heading text-4xl font-bold text-foreground mb-8">
+      <section className="max-w-5xl mx-auto px-4 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
             Tune In 🎵
           </h1>
-
-          <p className="text-sm text-muted-foreground mb-6">
-            Choose how you're feeling. We'll play music that matches.
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+            Pick how you feel — we'll recommend Spotify playlists curated for that mood.
           </p>
+        </motion.div>
 
-          {/* Emotion categories */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {emotionCategories.map((cat, i) => (
+        {/* Mood pills */}
+        <div className="glass-card p-5 mb-6">
+          <div className="flex flex-wrap justify-center gap-3">
+            {moods.map((m, i) => (
               <motion.button
-                key={cat.name}
-                initial={{ opacity: 0, y: 20 }}
+                key={m.name}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                onClick={() => { setSelected(cat.name); setPlaying(null); }}
-                className={`px-6 py-3 rounded-full text-sm font-medium transition-all shadow-md hover:-translate-y-1 hover:shadow-lg border-none cursor-pointer ${
-                  selected === cat.name ? 'ring-2 ring-botanical-dark scale-105' : ''
+                transition={{ delay: i * 0.05 }}
+                onClick={() => setSelected(m.name)}
+                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-md hover:-translate-y-1 hover:shadow-lg border-none cursor-pointer ${
+                  selected === m.name ? 'ring-2 ring-botanical-dark scale-105' : ''
                 }`}
                 style={{
-                  background: `linear-gradient(135deg, ${cat.color}dd, ${cat.color}88)`,
-                  color: ['Happy', 'Relaxed'].includes(cat.name) ? '#333' : '#fff',
+                  background: `linear-gradient(135deg, ${m.color}dd, ${m.color}88)`,
+                  color: ['Happy'].includes(m.name) ? '#333' : '#fff',
                 }}
               >
-                {cat.icon} {cat.name}
+                {m.icon} {m.name}
               </motion.button>
             ))}
           </div>
-
-          {/* Track list */}
-          {selectedCategory && (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-5 rounded-2xl"
-              style={{
-                background: 'hsla(270, 30%, 97%, 0.7)',
-                border: '1px solid hsla(135, 25%, 75%, 0.3)',
-              }}
-            >
-              <p className="text-sm font-semibold text-foreground mb-4">
-                {selectedCategory.icon} {selectedCategory.name} Tracks
-              </p>
-              <div className="space-y-3">
-                {selectedCategory.tracks.map((track) => (
-                  <button
-                    key={track}
-                    onClick={() => setPlaying(track)}
-                    className={`w-full p-3 rounded-xl text-left text-sm transition-all border cursor-pointer ${
-                      playing === track
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-card border-border text-foreground hover:bg-secondary'
-                    }`}
-                  >
-                    {playing === track ? '▶ ' : '♪ '}{track}
-                  </button>
-                ))}
-              </div>
-
-              {playing && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="mt-4 p-3 rounded-xl bg-card text-sm text-center text-botanical-dark font-medium"
-                >
-                  🎶 Now Playing: {playing}
-                  <p className="text-xs text-muted-foreground mt-1">
-                    (Audio files would be loaded from your media folder)
-                  </p>
-                </motion.div>
-              )}
-            </motion.div>
-          )}
         </div>
+
+        {/* Recommendations */}
+        <motion.div
+          key={selectedMood.name}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card p-6"
+        >
+          <div className="text-center mb-5">
+            <p className="text-2xl">{selectedMood.icon}</p>
+            <h2 className="font-heading text-xl font-semibold text-foreground">
+              {selectedMood.name} — recommended for you
+            </h2>
+            <p className="text-sm text-muted-foreground italic mt-1">{selectedMood.tagline}</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {selectedMood.playlists.map(p => (
+              <div key={p.spotifyId} className="rounded-2xl overflow-hidden bg-card border border-border">
+                <p className="text-sm font-semibold text-foreground px-4 pt-3 pb-2">
+                  🎧 {p.title}
+                </p>
+                <iframe
+                  title={p.title}
+                  src={`https://open.spotify.com/embed/${p.type}/${p.spotifyId}?utm_source=generator&theme=0`}
+                  width="100%"
+                  height="352"
+                  frameBorder={0}
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="block"
+                />
+              </div>
+            ))}
+          </div>
+
+          <p className="text-xs text-muted-foreground text-center mt-5">
+            Powered by Spotify. A free Spotify account lets you play full tracks; otherwise you'll hear 30-second previews.
+          </p>
+        </motion.div>
       </section>
     </PageLayout>
   );
