@@ -5,6 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 import PageLayout from '@/components/PageLayout';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { getUserProfile } from '@/lib/user-profile';
+
+const routeAfterAuth = () => {
+  const profile = getUserProfile();
+  return profile.completedOnboarding ? '/dashboard' : '/onboarding';
+};
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -16,7 +22,7 @@ const AuthPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate('/dashboard', { replace: true });
+    if (!authLoading && user) navigate(routeAfterAuth(), { replace: true });
   }, [user, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,12 +40,12 @@ const AuthPage = () => {
         });
         if (error) throw error;
         toast.success('Welcome! Your sanctuary awaits 🌸');
-        navigate('/dashboard');
+        navigate('/onboarding');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success('Welcome back 🌿');
-        navigate('/dashboard');
+        navigate(routeAfterAuth());
       }
     } catch (err: any) {
       const msg = err?.message ?? 'Something went wrong';

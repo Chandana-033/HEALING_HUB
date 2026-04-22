@@ -4,6 +4,7 @@ import PageLayout from '@/components/PageLayout';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { getMoodData, getJournalEntries } from '@/lib/wellness-logic';
+import { getUserProfile, getCycleData, predictCyclePhase, PHASE_INSIGHTS } from '@/lib/user-profile';
 import { motion } from 'framer-motion';
 import { Line } from 'react-chartjs-2';
 import {
@@ -30,6 +31,10 @@ interface SleepEntry { date: string; duration: number; quality: number; }
 const DashboardPage = () => {
   const { user, loading } = useAuth();
   const [displayName, setDisplayName] = useState<string>('');
+  const profile = useMemo(() => getUserProfile(), []);
+  const cycle = useMemo(() => getCycleData(), []);
+  const phaseInfo = useMemo(() => predictCyclePhase(cycle, profile), [cycle, profile]);
+  const phaseInsight = PHASE_INSIGHTS[phaseInfo.phase];
 
   useEffect(() => {
     if (!user) return;
@@ -166,8 +171,35 @@ const DashboardPage = () => {
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
             Hello, {displayName} 🌸
           </h1>
-          <p className="text-muted-foreground">Here's your wellness reflection for today</p>
+          <p className="text-muted-foreground">
+            {profile.supportPreference === 'direct' && "Here's where things stand today."}
+            {profile.supportPreference === 'playful' && "Hey you ✨ — let's see how today's shaping up!"}
+            {profile.supportPreference === 'analytical' && "A reflective look at your week so far."}
+            {(!profile.supportPreference || profile.supportPreference === 'gentle') && "Here's your wellness reflection for today."}
+          </p>
         </motion.div>
+
+        {profile.tracksCycle && phaseInfo.phase !== 'unknown' && (
+          <Link
+            to="/luna-tracker"
+            className="block mb-6 glass-card-hover p-4 no-underline"
+          >
+            <div className="flex items-center gap-4">
+              <div className="text-3xl">{phaseInsight.emoji}</div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-foreground">
+                  {phaseInsight.title} · Day {phaseInfo.dayOfCycle}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {phaseInfo.daysUntilNextPeriod !== null && phaseInfo.daysUntilNextPeriod >= 0
+                    ? `Next period in ~${phaseInfo.daysUntilNextPeriod} days`
+                    : 'Tap to log today'}
+                </p>
+              </div>
+              <span className="text-muted-foreground text-sm">→</span>
+            </div>
+          </Link>
+        )}
 
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
