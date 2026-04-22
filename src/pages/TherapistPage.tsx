@@ -1,5 +1,6 @@
 import PageLayout from '@/components/PageLayout';
 import { motion } from 'framer-motion';
+import TherapyChatbot from '@/components/TherapyChatbot';
 
 interface Helpline {
   region: string;
@@ -139,6 +140,11 @@ const TherapistPage = () => (
           You don't have to go through this alone. Reach out to a crisis line or find a therapist that fits your needs.
         </p>
       </motion.div>
+
+      {/* Chatbot */}
+      <div className="mb-10">
+        <TherapyChatbot />
+      </div>
 
       {/* Crisis banner */}
       <div
